@@ -28,6 +28,19 @@ router.post("/", (req, res) => {
 
 // GET a project by id ----------
 
+//ADDED FOR AH
+router.get("/:id/actions", (req, res) => {
+  const { id } = req.params;
+
+  db.getProjectActions(id).then(projAct => {
+    if (projAct) {
+      res.json(projAct);
+    } else {
+      res.status(500).json({ message: "bummer" });
+    }
+  });
+});
+
 router.get("/:id", (req, res) => {
   // Get a project by id, BUT, include an array of actions for that project in your response. That is instead of just sending back,
   // {

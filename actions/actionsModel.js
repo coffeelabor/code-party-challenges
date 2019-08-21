@@ -15,5 +15,13 @@ function addAction(action) {
     .insert(action)
     .then(ids => {
       return getActionById(ids[0]);
+    })
+    .then(obj => {
+      return accomodateKnexsShortcomings(obj);
     });
+}
+
+function accomodateKnexsShortcomings(obj) {
+  // Use this function to accomodate knex's shortcoming and change an object's "complete" to either true or false, not 1 or 0
+  return { ...obj, complete: obj.complete ? true : false };
 }
