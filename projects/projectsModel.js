@@ -21,7 +21,13 @@ function getProjectActions(id) {
 function getProject(id) {
   return db("projects")
     .where({ id })
-    .first();
+    .first()
+    .then(obj => {
+      accomodateKnexsShortcomings(obj);
+    })
+    .then(obj => {
+      return (obj = {});
+    });
   // Make sure the project's "complete" value is either true or false, not 1 or 0.
 }
 
@@ -36,4 +42,11 @@ function addProject(project) {
 
 function accomodateKnexsShortcomings(obj) {
   // Use this function to accomodate knex's shortcoming and change an object's "complete" to either true or false, not 1 or 0
+  return { ...obj, complete: obj.complete ? true : false };
 }
+
+//ADDED FOR AH
+// function getIdActions(id){
+//   return db("projects")
+//   .outerJoin('actions', 'projects.id', 'actions.projects_id')
+// }
