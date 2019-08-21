@@ -28,17 +28,18 @@ router.post("/", (req, res) => {
 
 // GET a project by id ----------
 
-//ADDED FOR AH
-router.get("/:id/actions", (req, res) => {
+router.get("/:id", (req, res) => {
   const { id } = req.params;
-
-  db.getProjectActions(id).then(projAct => {
-    if (projAct) {
-      res.json(projAct);
-    } else {
+  db.getProject(id)
+    .then(project => {
+      db.getProjectActions(id).then(actions => {
+        project.actions = actions;
+        res.status(200).json(project);
+      });
+    })
+    .catch(err => {
       res.status(500).json({ message: "bummer" });
-    }
-  });
+    });
 });
 
 router.get("/:id", (req, res) => {
